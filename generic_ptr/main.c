@@ -3,6 +3,20 @@
 #include <assert.h>
 #include <stdint.h>
 
+/**
+ * So I was originally making a vec_t for a class project, and I defined it as
+ * such:
+ *  { void ** data, size_t len, .. }
+ * I realized that the 'void **' was iffy... basically iteration was too
+ * expensive if for each value, I had to deref a pointer. Instead whatever was
+ * stored should be stored in contiguous memory-space, that way walking up and
+ * down the vec_t worked the way it was supposed to.
+ *
+ * So that... took a little work.
+ *
+ * TODO: Make a generic iterator!
+ */
+
 enum ripeness {
     underripe,
     ripe,
@@ -67,12 +81,14 @@ int main(void) {
     printf("Size of banana: %zd\n", vec->size_of);
 
     print_banana((banana_t *) vec->data);
-    vec_iter(vec);
-    print_banana((banana_t *) vec->data);
+
     vec_iter(vec);
     print_banana((banana_t *) vec->data);
 
-    vec_iter(vec); // no one complains
+    vec_iter(vec);
+    print_banana((banana_t *) vec->data);
+
+    vec_iter(vec); // no one complains?
 
     return 0;
 }
