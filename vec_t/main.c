@@ -32,12 +32,6 @@ typedef struct {
 } banana_t;
 
 static void
-banana_field_init(void * banana_ptr) {
-    banana_t * banana = banana_ptr;
-    // banana->name = malloc(20); // this is really optional.
-}
-
-static void
 banana_init(banana_t * banana, char * name, enum ripeness level) {
     banana->name = name;
     banana->ripeness = level;
@@ -45,9 +39,9 @@ banana_init(banana_t * banana, char * name, enum ripeness level) {
 }
 
 static void
-banana_field_free(void * banana_ptr) {
-    banana_t * banana = banana_ptr;
-    free(banana->name);
+banana_free(void * banana_ptr) {
+    /*banana_t * banana = banana_ptr;*/
+    /*free(banana->name);*/
 }
 
 static void
@@ -64,10 +58,19 @@ print_banana(void * banana_ptr) {
 
 int main(void)
 {
+    vec_t * vec = new_vec(sizeof(banana_t), 3, banana_free);
 
-    /*banana_t * banana;*/
+    banana_init(vec_push(vec), "First", ripe);
+    banana_init(vec_push(vec), "Second", underripe);
+    banana_init(vec_push(vec), "Third", overripe);
 
-    /*print_banana((banana_t *) vec->data);*/
+    print_banana(vec_get(vec, 0));
+    print_banana(vec_get(vec, 1));
+    print_banana(vec_get(vec, 2));
+
+    print_banana(vec_pop(vec));
+    print_banana(vec_pop(vec));
+    print_banana(vec_pop(vec));
 
     return 0;
 }
