@@ -1,16 +1,11 @@
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <assert.h>
 #include <stdint.h>
 
 #include "vec.h"
-
-iter_t *
-vec_to_iter(vec_t * vec) {
-    vec->cur = vec->cur + vec->size_of;
-    return NULL;
-}
 
 vec_t *
 arr_to_vec(void * array_start, size_t size_of, size_t len)
@@ -56,12 +51,25 @@ void * vec_pop(vec_t * vec)
 {
     if (vec->len == 0) { return NULL; }
     vec->len -= 1;
-    return (void *) (vec->data + (vec->size_of * vec->len)); 
+    void * data = (void *) (vec->data + (vec->size_of * vec->len)); 
+    void * ret_data = malloc(vec->size_of);
+    return memcpy(ret_data, data, vec->size_of);
 }
 
-void * vec_get(vec_t * vec, int index)
+iter_t *
+vec_to_iter(vec_t * vec)
 {
-    assert(index < vec->len);
-    return (void *) (vec->data + (vec->size_of * index));
+
+    return NULL;
+}
+
+void
+vec_free(vec_t * vec)
+{
+    void * v;
+    while ((v = vec_pop(vec)) != NULL) {
+        vec->free_data(v);
+    }
+    free(vec);
 }
 
