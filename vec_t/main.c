@@ -47,13 +47,13 @@ banana_free(void * banana_ptr) {
 static void
 print_banana(void * banana_ptr) {
     banana_t * banana = banana_ptr;
-    printf("Banana: %s\n", banana->name);
+    printf("Banana: %s; ", banana->name);
     switch (banana->ripeness) {
         case underripe: printf("Not quite good yet");           break;
         case ripe:      printf("Good to eat!");                 break;
         case overripe:  printf("Oops... left out too long :("); break;
     }
-    printf("\n");
+    printf(".\n");
 }
 
 int main(void)
@@ -67,6 +67,10 @@ int main(void)
     print_banana(vec_get(vec, 0));
     print_banana(vec_get(vec, 1));
     print_banana(vec_get(vec, 2));
+
+    print_banana(vec_pop(vec));
+    banana_init(vec_push(vec), "Fourth", underripe);
+    print_banana(vec_pop(vec));
 
     print_banana(vec_pop(vec));
     print_banana(vec_pop(vec));
